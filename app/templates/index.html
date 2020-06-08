@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+
+<body>
+
+    <h1>Welcome to lemmatizer server !</h1>
+    <h2>Following are the APIs : </h2>
+    <table border="1">
+        <tr>
+            <th>API</th>
+            <th>Function</th>
+            <th>Example</th>
+        </tr>
+
+        <tr>
+            <td>/getLemmas/ (GET method)</td>
+            <td>Get lemmas of words which are passed as comma seperated string</td>
+            <td>https://lemmatizer-api.herokuapp.com/getLemmas/loved,rocks,love</td>
+        </tr>
+
+        <tr>
+            <td>/transformCorpus/ (GET method)</td>
+            <td>Tokenize, Remove stop words, Lemmatize the corpus</td>
+            <td>https://lemmatizer-api.herokuapp.com/transformCorpus/(This is a string)</td>
+        </tr>
+
+        <tr>
+            <td>/addFilterWords/ (POST method)</td>
+            <td>Adding filter words</td>
+            <td>curl -H "Content-Type: application/json" -X POST -d '{"words":["love"]}'
+                https://lemmatizer-api.herokuapp.com/addFilterWords/</td>
+        </tr>
+
+        <tr>
+            <td>/removeFilterWords/ (POST method)</td>
+            <td>Remove filter words</td>
+            <td>curl -H "Content-Type: application/json" -X POST -d '{"words":["love"]}'
+                https://lemmatizer-api.herokuapp.com/removeFilterWords/</td>
+        </tr>
+    </table>
+
+</body>
+
+</html>
