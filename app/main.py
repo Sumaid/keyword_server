@@ -5,6 +5,7 @@ from nltk.corpus import stopwords
 from collections import defaultdict
 from textblob import TextBlob
 import nltk
+import json
 lemmatizer = nltk.stem.WordNetLemmatizer()
 stopwords_set = set(stopwords.words('english'))
 stopwords_set.update(['a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', "aren't", 'as', 'at', 'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can', "can't", 'cannot', 'com', 'could', "couldn't", 'did', "didn't", 'do', 'does', "doesn't", 'doing', "don't", 'down', 'during', 'each', 'else', 'ever', 'few', 'for', 'from', 'further', 'get', 'had', "hadn't", 'has', "hasn't", 'have', "haven't", 'having', 'he', "he'd", "he'll", "he's", 'her', 'here', "here's", 'hers', 'herself', 'him', 'himself', 'his', 'how', "how's", 'http', 'I', "I'd", "I'll", "I'm", "I've", 'if', 'in', 'into', 'is', "isn't", 'it', "it's", 'its', 'itself', 'just', 'k', "let's", 'like', 'me', 'more', 'most', "mustn't", 'my', 'myself', 'no', 'nor',
@@ -13,6 +14,12 @@ tag_map = defaultdict(lambda: wn.NOUN)
 tag_map['J'] = wn.ADJ
 tag_map['V'] = wn.VERB
 tag_map['R'] = wn.ADV
+
+import spacy
+import pytextrank
+nlp = spacy.load("en_core_web_sm")
+tr = pytextrank.TextRank()
+nlp.add_pipe(tr.PipelineComponent, name="textrank", last=True)
 
 app = Flask(__name__)
 
@@ -64,3 +71,22 @@ def transpose_corpus_remove():
         return Response(status=200)
     except:
         return Response(status=400)
+
+
+@app.route("/getKeywords/<word>", methods=['GET'])
+def get_keyword(word):
+    doc = nlp(word.lower())
+    if len(doc._.phrases)>0:
+        mx = doc._.phrases[0].rank
+    else:
+        mx = 1
+    words = []
+    for p in doc._.phrases:
+        if p.rank>0:
+            words += [{'phrase':p.text, 'rank':p.rank/mx}]
+    return jsonify(words=words)
+
+
+@app.route("/getKeywords/", methods=['GET'])
+def get_keyword_empty():
+    return jsonify(words=[])
