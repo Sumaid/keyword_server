@@ -82,8 +82,7 @@ def get_keyword(word):
         mx = 1
     words = []
     for p in doc._.phrases:
-        if p.rank>0:
-            words += [{'phrase':p.text, 'rank':p.rank/mx}]
+        words += [{'phrase':p.text, 'rank':p.rank/mx, 'chunks':[str(wrd) for wrd in p.chunks]}]
     return jsonify(words=words)
 
 
