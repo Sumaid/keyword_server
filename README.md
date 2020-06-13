@@ -1,4 +1,4 @@
-# Text Preprocessing Python REST API Server 
+# Text Processing Python REST API Server 
 
 Deployed : https://lemmatizer-api.herokuapp.com/
 
