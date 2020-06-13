@@ -11,10 +11,12 @@ Deployed : https://lemmatizer-api.herokuapp.com/
         en_core_web_sm-2.2.0.tar.gz    # Embeddings for text processing
         .gitignore        # Ignore files in version control
         averaged_perceptron    # Wordnet embeddings required for text processing
+        tests/          # Unit Tests corresponding to different APIs
         app/
             main.py     # Server Main Logic
             templates/
                 index.html    # Root page of server
+
 
 
 ## APIs
