@@ -1,8 +1,9 @@
-from app.main import app
+from .context import app
 from urllib.parse import urlencode
 import json
 
 def test_getkeywords():
+    from app.main import app
     res = app.test_client().get('/getKeywords/Life is a matter of good choices')
     result = json.loads(res.data.decode('utf-8'))
     assert len(result['words']) == 3
