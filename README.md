@@ -1,5 +1,7 @@
 # Text Preprocessing Python REST API Server 
 
+Deployed : https://lemmatizer-api.herokuapp.com/
+
 ## Project layout
 
         wsgi.py      # Flask application container
@@ -16,6 +18,11 @@
 
 
 ## APIs
+
+### Keywords retrieval
+    Get keywords including phrases from text corpus
+    /getKeywords/ (GET method)		
+    Example : https://lemmatizer-api.herokuapp.com/getKeywords/Life is a matter of good choices and bad choices.
 
 ### Lemmatization
     Get lemmas of words which are passed as comma seperated string
