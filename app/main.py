@@ -41,9 +41,14 @@ def get_lemmas(wordList):
     Input : comma seperated words
     Output : json file with list containing lemmas of each word
     """
-    if not wordList: return jsonify([])
-    wordList = wordList.lower()
-    return jsonify(words=[lemmatizer.lemmatize(token, tag_map[tag[0]]) for token, tag in pos_tag(wordList.split(','))])
+    try:
+        if not wordList: return jsonify([])
+        wordList = wordList.lower()
+        return jsonify(words=[lemmatizer.lemmatize(token, tag_map[tag[0]]) for token, tag in pos_tag(wordList.split(','))])
+    except Exception as e: 
+        print('getLemmas Error : ',e)
+        return Response(400)
+
 
 @app.route("/getLemmas/", methods=['GET'])
 def get_lemmas_nowords():
@@ -61,12 +66,15 @@ def transpose_corpus(word):
     Input : comma seperated words
     Output : json file with list containing lemmas of each word
     """
-    if not word: return jsonify([])
-    word = word.lower()
-    filtered_words = [token for token in TextBlob(
-        word).words if not token in stopwords_set and not token[0] == "'"]
-    return jsonify(words=[lemmatizer.lemmatize(token, tag_map[tag[0]]) for token, tag in pos_tag(filtered_words)])
-
+    try:
+        if not word: return jsonify([])
+        word = word.lower()
+        filtered_words = [token for token in TextBlob(
+            word).words if not token in stopwords_set and not token[0] == "'"]
+        return jsonify(words=[lemmatizer.lemmatize(token, tag_map[tag[0]]) for token, tag in pos_tag(filtered_words)])
+    except Exception as e: 
+        print('transformCorpus Error : ',e)
+        return Response(400)
 
 @app.route("/transformCorpus/", methods=['GET'])
 def transpose_corpus_empty():
@@ -85,7 +93,8 @@ def transpose_corpus_add():
     try:
         stopwords_set.update([word.lower() for word in request.json['words']])
         return Response(status=200)
-    except:
+    except Exception as e: 
+        print('addFilterWords Error : ',e)
         return Response(status=400)
 
 
@@ -101,7 +110,8 @@ def transpose_corpus_remove():
             stopwords_set.discard(word)
             stopwords_set.discard(word.lower())
         return Response(status=200)
-    except:
+    except Exception as e: 
+        print('removeFilterWords Error : ',e)
         return Response(status=400)
 
 
@@ -112,16 +122,46 @@ def get_keyword(word):
     Input : text corpus
     Output : list of words and phrases with their rank/frequency
     """
-    if not word: return jsonify(words=[])
-    doc = nlp(word.lower())
-    if len(doc._.phrases)>0:
-        mx = doc._.phrases[0].rank
-    else:
-        mx = 1
-    words = []
-    for p in doc._.phrases:
-        words += [{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count, 'chunks':[str(wrd) for wrd in p.chunks]}]
-    return jsonify(words=words)
+    try:
+        if not word: return jsonify(words=[])
+        doc = nlp(word.lower())
+        if len(doc._.phrases)>0:
+            mx = doc._.phrases[0].rank
+        else:
+            mx = 1
+        words = []
+        for p in doc._.phrases:
+            words += [{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count, 'chunks':[str(wrd) for wrd in p.chunks]}]
+        return jsonify(words=words)
+    except Exception as e: 
+        print('getKeywords Error : ',e)
+        return Response(400)
+
+@app.route("/getKeywordsBatch/", methods=['POST'])
+def get_keywords_batch():
+    """
+    API to get keywords and phrases with their rank using pytextrank library
+    Input : text corpus
+    Output : list of words and phrases with their rank/frequency
+    """
+    try:
+        result = []
+        if len(request.json['words']) == 0: return jsonify(words=[[]])
+        for word in request.json['words']:
+            if not word: return jsonify(words=[])
+            doc = nlp(word.lower())
+            if len(doc._.phrases)>0:
+                mx = doc._.phrases[0].rank
+            else:
+                mx = 1
+            words = []
+            for p in doc._.phrases:
+                words += [{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count}]
+            result += [words]
+        return jsonify(words=result)
+    except Exception as e: 
+        print('getKeywordsBatch Error : ',e)
+        return Response(400)
 
 @app.route("/getKeywords/", methods=['GET'])
 def get_keyword_empty():
