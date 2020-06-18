@@ -13,35 +13,9 @@
         </tr>
 
         <tr>
-            <td>/getKeywords/ (GET method)</td>
+            <td>/getKeywordsBatch/ (POST method)</td>
             <td>Get keywords and phrases with their ranks and frequencies from text corpus</td>
-            <td>https://lemmatizer-api.herokuapp.com/getKeywords/Life is a matter of good choices and bad choices.</td>
-        </tr>
-
-        <tr>
-            <td>/getLemmas/ (GET method)</td>
-            <td>Get lemmas of words which are passed as comma seperated string</td>
-            <td>https://lemmatizer-api.herokuapp.com/getLemmas/loved,rocks,love</td>
-        </tr>
-
-        <tr>
-            <td>/transformCorpus/ (GET method)</td>
-            <td>Tokenize, Remove stop words, Lemmatize the corpus</td>
-            <td>https://lemmatizer-api.herokuapp.com/transformCorpus/(This is a string)</td>
-        </tr>
-
-        <tr>
-            <td>/addFilterWords/ (POST method)</td>
-            <td>Adding filter words</td>
-            <td>curl -H "Content-Type: application/json" -X POST -d '{"words":["love"]}'
-                https://lemmatizer-api.herokuapp.com/addFilterWords/</td>
-        </tr>
-
-        <tr>
-            <td>/removeFilterWords/ (POST method)</td>
-            <td>Remove filter words</td>
-            <td>curl -H "Content-Type: application/json" -X POST -d '{"words":["love"]}'
-                https://lemmatizer-api.herokuapp.com/removeFilterWords/</td>
+            <td>curl -H "Content-Type: application/json" -X POST -d '{"responses":["love is a drug", "i love excellent service"]}' http://lemmatizer-api.herokuapp.com/getKeywordsBatch/</td>
         </tr>
     </table>
 

@@ -1,6 +1,4 @@
 flask
 gunicorn
-nltk
-textblob
 pytextrank
 ./en_core_web_sm-2.2.0.tar.gz
