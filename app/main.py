@@ -1,6 +1,4 @@
 from flask import request, Flask, jsonify, Response, render_template
-import json
-from collections import defaultdict
 import spacy
 import pytextrank
 
