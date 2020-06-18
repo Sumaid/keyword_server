@@ -154,6 +154,7 @@ def get_keywords_batch():
                 mx = doc._.phrases[0].rank
             else:
                 mx = 1
+            if mx == 0: mx = 1
             words = []
             for p in doc._.phrases:
                 words += [{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count}]
