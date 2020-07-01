@@ -27,13 +27,12 @@ def get_keywords_batch():
         result = []
         if len(request.json['responses']) == 0: return jsonify(words=[[]])
         for word in request.json['responses']:
-            if not word: return jsonify(words=[])
+            if not word: return jsonify(words=[[]])
             doc = nlp(word.lower())
             if len(doc._.phrases)>0:
                 mx = doc._.phrases[0].rank
             else:
                 mx = 1
-            if mx == 0: mx = 1
             result += [[{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count} for p in doc._.phrases]]
         return jsonify(words=result)
     except Exception as e: 
