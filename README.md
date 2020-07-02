@@ -26,6 +26,11 @@ Deployed : https://lemmatizer-api.herokuapp.com/
     /getKeywordsBatch/ (POST method)		
     Example : curl -H "Content-Type: application/json" -X POST -d '{"responses":["love is a drug", "i love excellent service"]}' http://lemmatizer-api.herokuapp.com/getKeywordsBatch/
 
+### Keywords retrieval with sentiments
+    Get keywords & phrases, and sentiment score of each response ranging from -1 to 1
+    /getKeywordsWithSentiment/ (POST method)		
+    Example : curl -H "Content-Type: application/json" -X POST -d '{"responses":["love is a drug", "i love excellent service"]}' http://lemmatizer-api.herokuapp.com/getKeywordsWithSentiment/
+
 ## Local Development
 
 ### Install
