@@ -17,6 +17,13 @@
             <td>Get keywords and phrases with their ranks and frequencies from text corpus</td>
             <td>curl -H "Content-Type: application/json" -X POST -d '{"responses":["love is a drug", "i love excellent service"]}' http://lemmatizer-api.herokuapp.com/getKeywordsBatch/</td>
         </tr>
+
+        <tr>
+            <td>/getKeywordsWithSentiment/ (POST method)</td>
+            <td>Get keywords and phrases with their ranks and frequencies from text corpus,and retrieve a sentiment score corresponding to each response</td>
+            <td>curl -H "Content-Type: application/json" -X POST -d '{"responses":["sky is blue", "i love excellent service"]}' http://lemmatizer-api.herokuapp.com/getKeywordsWithSentiment/</td>
+        </tr>
+
     </table>
 
 </body>
