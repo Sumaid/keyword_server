@@ -58,6 +58,8 @@ def get_keywords_sentiment():
                 mx = doc._.phrases[0].rank
             else:
                 mx = 1
+            if mx == 0:
+                mx = 1
             result += [[{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count} for p in doc._.phrases]]
             sentiments += [analyzer.polarity_scores(sentence)['compound']]
         return jsonify(words=result, sentiments=sentiments)
