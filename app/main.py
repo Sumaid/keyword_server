@@ -32,12 +32,12 @@ def get_keywords_batch():
             try:
                 doc = nlp(sentence.lower())
                 if len(doc._.phrases)>0:
-                    mx = doc._.phrases[0].rank
+                    max_rank = doc._.phrases[0].rank    # phrases are recieved in decreasing order of their rank, so first phrase rank is highest
                 else:
-                    mx = 1
-                if mx == 0:
-                    mx = 1
-                result += [[{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count} for p in doc._.phrases]]
+                    max_rank = 1
+                if max_rank == 0:                       # max_rank shouldn't be 0 to avoid division by 0 exception
+                    max_rank = 1
+                result += [[{'phrase':p.text, 'rank':p.rank/max_rank, 'count':p.count} for p in doc._.phrases]]
             except Exception as e:
                 print('Response is : ', sentence)
                 print('Response processing Error : ',e)
@@ -52,7 +52,7 @@ def get_keywords_sentiment():
     """
     API to get keywords and phrases with their rank & sentiments
     Input : text corpus
-    Output : list of words and phrases with their rank/frequency
+    Output : list of words and phrases with their rank/frequency & list of sentiments(-1 to 1) of each response
     """
     try:
         result = []
@@ -63,12 +63,12 @@ def get_keywords_sentiment():
             try:
                 doc = nlp(sentence.lower())
                 if len(doc._.phrases)>0:
-                    mx = doc._.phrases[0].rank
+                    max_rank = doc._.phrases[0].rank   # phrases are recieved in decreasing order of their rank, so first phrase rank is highest
                 else:
-                    mx = 1
-                if mx == 0:
-                    mx = 1
-                result += [[{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count} for p in doc._.phrases]]
+                    max_rank = 1
+                if max_rank == 0:                      # max_rank shouldn't be 0 to avoid division by 0 exception
+                    max_rank = 1
+                result += [[{'phrase':p.text, 'rank':p.rank/max_rank, 'count':p.count} for p in doc._.phrases]]
                 sentiments += [analyzer.polarity_scores(sentence)['compound']]
             except Exception as e:
                 print('Response is : ', sentence)
