@@ -29,12 +29,19 @@ def get_keywords_batch():
         if len(request.json['responses']) == 0: return jsonify(words=[[]])
         for sentence in request.json['responses']:
             if not sentence: return jsonify(words=[[]])
-            doc = nlp(sentence.lower())
-            if len(doc._.phrases)>0:
-                mx = doc._.phrases[0].rank
-            else:
-                mx = 1
-            result += [[{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count} for p in doc._.phrases]]
+            try:
+                doc = nlp(sentence.lower())
+                if len(doc._.phrases)>0:
+                    mx = doc._.phrases[0].rank
+                else:
+                    mx = 1
+                if mx == 0:
+                    mx = 1
+                result += [[{'phrase':p.text, 'rank':p.rank/mx, 'count':p.count} for p in doc._.phrases]]
+            except Exception as e:
+                print('Response is : ', sentence)
+                print('Response processing Error : ',e)
+                return Response(400)
         return jsonify(words=result)
     except Exception as e: 
         print('getKeywordsBatch Error : ',e)
@@ -69,5 +76,5 @@ def get_keywords_sentiment():
                 return Response(400)
         return jsonify(words=result, sentiments=sentiments)
     except Exception as e: 
-        print('getKeywordsBatch Error : ',e)
+        print('getKeywordsWithSentiment Error : ',e)
         return Response(400)
